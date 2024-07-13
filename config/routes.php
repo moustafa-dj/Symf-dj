@@ -8,5 +8,8 @@ return static function(RoutingConfigurator $routes)
 {
     $routes->collection()->prefix('/admin')
             ->add('admin.login-form','/login-form')
+            ->controller([AuthController::class ,'index'])->methods(['GET'])
+
+            ->add('admin.login','/login')
             ->controller([AuthController::class ,'index'])->methods(['GET']);
 };
