@@ -4,10 +4,16 @@ namespace App\Entity;
 
 use App\Repository\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
 #[ORM\Table(name: '`admin`')]
-class Admin
+#[UniqueEntity('email')]
+class Admin implements UserInterface , PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,6 +24,7 @@ class Admin
     private ?string $name;
 
     #[ORM\Column(length: 191)]
+    #[Assert\Email()]
     private ?string $email;
 
     #[ORM\Column(length: 191)]
@@ -37,6 +44,9 @@ class Admin
 
     #[ORM\Column(type:'text',nullable:true,)]
     private? string $about;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     public function getId(): ?int
     {
@@ -137,4 +147,29 @@ class Admin
 
         return $this;
     }
+
+    public function getRoles(): array
+    {
+        $roles =  $this->roles;
+        $roles[] = 'ROLE_ADMIN';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->email;
+    }
+
 }
