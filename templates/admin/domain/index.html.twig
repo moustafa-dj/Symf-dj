@@ -1,0 +1,55 @@
+{% extends 'admin/layouts/main.html.twig'%}
+{% block content %}
+  <style>
+      .inline-buttons > * {
+          display: inline-block;
+          margin-right: 5px;
+      }
+  </style>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th>
+                    <b>N</b>ame
+                  </th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for domain in domains %}
+                  <tr>
+                    <td>{{domain.name }}</td>
+                    <td>{{domain.description}}</td>
+                    <td>
+                    </td>
+                    <td class="inline-buttons">
+                        <form action="" method="POST">
+
+                          <button type="submit" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                        </form>
+                        <a href ="" class="btn btn-success"><i class="bi bi-check-circle"></i></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                
+              </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock %}

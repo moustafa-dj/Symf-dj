@@ -26,4 +26,6 @@ services:
         tags: ['controller.service_arguments']
     App\Controller\Admin\AdminController:
         tags: ['controller.service_arguments']
+    App\Controller\Admin\DomainController:
+        tags: ['controller.service_arguments']
     

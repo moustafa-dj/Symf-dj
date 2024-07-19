@@ -13,7 +13,7 @@ return static function (RoutingConfigurator $routes) {
             ->methods(['GET'])
         ->add('admin_login', '/login')
             ->controller([AuthController::class, 'login'])
-            ->methods(['GET'])
+            ->methods(['POST'])
         ->add('dashbord','/dashbored')
             ->controller([AdminController::class , 'index'])
             ->methods(['GET']);
