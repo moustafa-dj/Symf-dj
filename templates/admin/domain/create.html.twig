@@ -1,3 +1,36 @@
 {% extends 'admin/layouts/main.html.twig' %}
 {% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Domain Form</h5>
+            {{form_start(form , {method:'POST',action:path('app_domain_store')})}}
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">{{form_label(form.name)}}</label>
+
+                    <div class="col-sm-10">
+                        {{form_widget(form.name)}}
+                        <div class="invalid-feedback">
+                            {{form_errors(form.name)}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">{{form_label(form.description)}}</label>
+                    <div class="col-sm-10 ">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                {{form_widget(form.description)}}
+                            </div>
+                            <div class="invalid-feedback">
+                                {{form_errors(form.description)}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    {{form_row(form.submit)}}
+                </div>
+            {{form_end(form)}}
+        </div>
+    </div>
 {% endblock %}
