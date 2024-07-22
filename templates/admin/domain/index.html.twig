@@ -33,11 +33,11 @@
                     <td>
                     </td>
                     <td class="inline-buttons">
-                        <form action="" method="POST">
+                        <form action="p" method="POST">
 
-                          <button type="submit" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
                         </form>
-                        <a href ="" class="btn btn-success"><i class="bi bi-check-circle"></i></a>
+                        <a href="{{path('app_domain_delete',{id:domain.id})}}" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></a>
+                        <a href ="{{path('app_domain_update',{id:domain.id})}}" class="btn btn-success"><i class="bi bi-check-circle"></i></a>
                     </td>
                   </tr>
                 {% endfor %}
