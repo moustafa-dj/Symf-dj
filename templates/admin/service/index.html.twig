@@ -1,0 +1,57 @@
+{% extends 'admin/layouts/main.html.twig'%}
+{% block content %}
+  <style>
+      .inline-buttons > * {
+          display: inline-block;
+          margin-right: 5px;
+      }
+  </style>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th>
+                    <b>N</b>ame
+                  </th>
+                  <th>Domain</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for service in services %}
+                  <tr>
+                    <td>{{service.domain_id.name }}</td>
+                    <td>{{service.title }}</td>
+                    <td>{{service.description}}</td>
+                    <td>{{service.price}}</td>
+                    <td class="inline-buttons">
+                        <form action="p" method="POST">
+
+                        </form>
+                        <a href="" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></a>
+                        <a href ="" class="btn btn-success"><i class="bi bi-check-circle"></i></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                
+              </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock %}

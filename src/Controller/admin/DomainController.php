@@ -64,7 +64,6 @@ class DomainController extends AbstractController
         ]);
     }
 
-
     #[Route('/manager/domain/update/{id}' , name:'app_domain_update' , methods:['GET','POST'])]
     public function update(Request $request , Domain $domain){
 
