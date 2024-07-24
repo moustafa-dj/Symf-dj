@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Service;
 use App\Form\ServiceType;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ServiceController extends AbstractController
 {
     protected ServiceRepository $service;
-    protected EntityManager $manager;
+    protected EntityManagerInterface $manager;
 
-    public function __construct(ServiceRepository $service , EntityManager $manager)
+    public function __construct(ServiceRepository $service , EntityManagerInterface $manager)
     {
         $this->service = $service;
         $this->manager = $manager;
@@ -42,13 +44,24 @@ class ServiceController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $service = $form->getData();
+            foreach ($service["ServiceMedia"] as $media) {
+                $fileName = 'service_' . $service->getTitle() . 'img.' . $media->guessExtension(); // Ensure unique filenames
+                $directory = $this->getParameter('uploads_directory') . '/service';
+
+                try {
+                    $media->move($directory, $fileName);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'File upload error: ' . $e->getMessage());
+                }
+            }
+
             $this->manager->persist($service);
             $this->manager->flush();
 
             return $this->redirectToRoute('app_service_list');
         }
 
-        return $this->render('admin/service/update.html.twig', [
+        return $this->render('admin/service/create.html.twig', [
             'form'=>$form
         ]);
     }
@@ -58,7 +71,7 @@ class ServiceController extends AbstractController
     {
         $form = $this->createForm(ServiceType::class , $service);
 
-        $form->handleRequest();
+        $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
 

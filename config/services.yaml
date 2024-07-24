@@ -28,4 +28,8 @@ services:
         tags: ['controller.service_arguments']
     App\Controller\Admin\DomainController:
         tags: ['controller.service_arguments']
+    App\Controller\Admin\ServiceController:
+        tags: ['controller.service_arguments']
+
+    Doctrine\Persistence\ObjectManager: '@doctrine.orm.default_entity_manager' 
     

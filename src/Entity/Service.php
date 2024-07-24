@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ServiceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,6 +28,17 @@ class Service
     #[ORM\ManyToOne(inversedBy: 'yes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Domain $domain = null;
+
+    /**
+     * @var Collection<int, ServiceMedia>
+     */
+    #[ORM\OneToMany(targetEntity: ServiceMedia::class, mappedBy: 'service')]
+    private Collection $yes;
+
+    public function __construct()
+    {
+        $this->yes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,14 +81,44 @@ class Service
         return $this;
     }
 
-    public function getDomainId(): ?Domain
+    public function getDomain(): ?Domain
     {
         return $this->domain;
     }
 
-    public function setDomainId(?Domain $domain): static
+    public function setDomain(?Domain $domain): static
     {
         $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ServiceMedia>
+     */
+    public function getYes(): Collection
+    {
+        return $this->yes;
+    }
+
+    public function addYe(ServiceMedia $ye): static
+    {
+        if (!$this->yes->contains($ye)) {
+            $this->yes->add($ye);
+            $ye->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeYe(ServiceMedia $ye): static
+    {
+        if ($this->yes->removeElement($ye)) {
+            // set the owning side to null (unless already changed)
+            if ($ye->getService() === $this) {
+                $ye->setService(null);
+            }
+        }
 
         return $this;
     }

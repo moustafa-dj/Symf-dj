@@ -76,7 +76,7 @@ class Domain
     {
         if (!$this->yes->contains($ye)) {
             $this->yes->add($ye);
-            $ye->setDomainId($this);
+            $ye->setDomain($this);
         }
 
         return $this;
@@ -86,8 +86,8 @@ class Domain
     {
         if ($this->yes->removeElement($ye)) {
             // set the owning side to null (unless already changed)
-            if ($ye->getDomainId() === $this) {
-                $ye->setDomainId(null);
+            if ($ye->getDomain() === $this) {
+                $ye->setDomain(null);
             }
         }
 

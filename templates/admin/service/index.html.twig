@@ -17,9 +17,6 @@
             <table class="table datatable">
               <thead>
                 <tr>
-                  <th>
-                    <b>N</b>ame
-                  </th>
                   <th>Domain</th>
                   <th>Title</th>
                   <th>Description</th>
@@ -30,7 +27,7 @@
               <tbody>
                 {% for service in services %}
                   <tr>
-                    <td>{{service.domain_id.name }}</td>
+                    <td>{{service.domain.name }}</td>
                     <td>{{service.title }}</td>
                     <td>{{service.description}}</td>
                     <td>{{service.price}}</td>
