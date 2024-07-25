@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Service;
+use App\Entity\ServiceMedia;
 use App\Form\ServiceType;
 use App\Repository\ServiceRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -44,15 +44,23 @@ class ServiceController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $service = $form->getData();
-            foreach ($service["ServiceMedia"] as $media) {
-                $fileName = 'service_' . $service->getTitle() . 'img.' . $media->guessExtension(); // Ensure unique filenames
+
+            $files = $form->get('ServiceMedia')->getData();
+
+            foreach ($files as $media) {
+
+                $fileName = 'service_' . $service->getTitle() . '_' . uniqid() . '.' . $media->guessExtension();
                 $directory = $this->getParameter('uploads_directory') . '/service';
 
-                try {
-                    $media->move($directory, $fileName);
-                } catch (FileException $e) {
-                    $this->addFlash('danger', 'File upload error: ' . $e->getMessage());
-                }
+                $media->move($directory, $fileName);
+                $service_media = new ServiceMedia();
+                $service_media->setPath($directory .'/'.$fileName);
+                $service_media->setName($fileName);
+                $service_media->setExtention($media->getExtension());
+                $service_media->setService($service);
+
+                $this->manager->persist($service_media);
+                    
             }
 
             $this->manager->persist($service);
@@ -76,13 +84,44 @@ class ServiceController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
 
             $service = $form->getData();
+
+            $files = $form->get('ServiceMedia')->getData();
+
+            if($files){
+                foreach($service->getServiceMedia() as $media)
+                {
+                    $file_path = $media->getPath();
+                    if(file_exists($file_path)){
+                        unlink($file_path);
+                    }
+                    $this->manager->remove($media);
+
+                }
+
+                foreach ($files as $media) {
+
+                    $fileName = 'service_' . $service->getTitle() . '_' . uniqid() . '.' . $media->guessExtension();
+                    $directory = $this->getParameter('uploads_directory') . '/service';
+    
+                    $media->move($directory, $fileName);
+                    $service_media = new ServiceMedia();
+                    $service_media->setPath($directory .'/'.$fileName);
+                    $service_media->setName($fileName);
+                    $service_media->setExtention($media->getExtension());
+                    $service_media->setService($service);
+    
+                    $this->manager->persist($service_media);
+                        
+                }
+            }
+
             $this->manager->persist($service);
             $this->manager->flush();
 
             return $this->redirectToRoute('app_service_list');
         }
 
-        return $this->render('' , [
+        return $this->render('admin/service/update.html.twig' , [
             'form' => $form,
             'service'=> $service
         ]);
@@ -91,9 +130,19 @@ class ServiceController extends AbstractController
     #[Route('manager/service/delete/{id}',name:'app_service_delete' , methods:['GET'])]
     public function destroy(Service $service){
         
+        foreach($service->getServiceMedia() as $media)
+        {
+            $this->manager->remove($media);
+
+            if(file_exists($media->getPath()))
+            {
+                unlink($media->getPath());
+            }
+
+        }
         $this->manager->remove($service);
         $this->manager->flush();
 
-        return $this->redirectToRoute('app_service_index');
+        return $this->redirectToRoute('app_service_list');
     }
 }

@@ -33,11 +33,11 @@ class Service
      * @var Collection<int, ServiceMedia>
      */
     #[ORM\OneToMany(targetEntity: ServiceMedia::class, mappedBy: 'service')]
-    private Collection $yes;
+    private Collection $service_media;
 
     public function __construct()
     {
-        $this->yes = new ArrayCollection();
+        $this->service_media = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,27 +96,26 @@ class Service
     /**
      * @return Collection<int, ServiceMedia>
      */
-    public function getYes(): Collection
+    public function getServiceMedia(): Collection
     {
-        return $this->yes;
+        return $this->service_media;
     }
 
-    public function addYe(ServiceMedia $ye): static
+    public function addServiceMedia(ServiceMedia $service_media): static
     {
-        if (!$this->yes->contains($ye)) {
-            $this->yes->add($ye);
-            $ye->setService($this);
+        if (!$this->service_media->contains($service_media)) {
+            $this->service_media->add($service_media);
+            $service_media->setService($this);
         }
 
         return $this;
     }
 
-    public function removeYe(ServiceMedia $ye): static
+    public function removeServiceMedia(ServiceMedia $service_media): static
     {
-        if ($this->yes->removeElement($ye)) {
-            // set the owning side to null (unless already changed)
-            if ($ye->getService() === $this) {
-                $ye->setService(null);
+        if ($this->service_media->removeElement($service_media)) {
+            if ($service_media->getService() === $this) {
+                $service_media->setService(null);
             }
         }
 

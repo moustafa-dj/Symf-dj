@@ -35,8 +35,8 @@
                         <form action="p" method="POST">
 
                         </form>
-                        <a href="" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></a>
-                        <a href ="" class="btn btn-success"><i class="bi bi-check-circle"></i></a>
+                        <a href="{{ path('app_service_delete',{id:service.id})}}" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></a>
+                        <a href ="{{ path('app_service_update',{id:service.id})}}" class="btn btn-success"><i class="bi bi-check-circle"></i></a>
                     </td>
                   </tr>
                 {% endfor %}
