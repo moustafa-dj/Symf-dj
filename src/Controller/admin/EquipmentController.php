@@ -21,17 +21,17 @@ class EquipmentController extends AbstractController
         $this->equipment = $equipment;
     }
 
-    #[Route('/equipment', name: 'app_equipment_list')]
+    #[Route('manager/equipment', name: 'app_equipment_list')]
     public function index(): Response
     {
         $equipments = $this->equipment->findAll();
 
-        return $this->render('equipment/index.html.twig', [
+        return $this->render('admin/equipment/index.html.twig', [
             'equipments' => $equipments,
         ]);
     }
 
-    #[Route('/equipment/create' , name:'equipment.store',methods:['POST','GET'])]
+    #[Route('manager/equipment/create' , name:'app_equipment_create',methods:['POST','GET'])]
     public function create(Request $request)
     {
         $equipment = new Equipment();
@@ -48,12 +48,12 @@ class EquipmentController extends AbstractController
             return $this->redirectToRoute('app_equipment_list');
         }
 
-        return $this->render('equipment/create.html.twig',[
-            'form' => $form
+        return $this->render('admin/equipment/create.html.twig',[
+            'form' => $form->createView()
         ]);
     }
 
-    #[Route('equipment/update/{id}' , name:'equipment_update',methods:['POST','GET'])]
+    #[Route('manager/equipment/update/{id}' , name:'app_equipment_update',methods:['POST','GET'])]
     public function update(Request $request , $id)
     {
         $equipment = $this->equipment->findOneBy(['id'=>$id]);
@@ -72,13 +72,13 @@ class EquipmentController extends AbstractController
             return $this->redirectToRoute('app_equipment_list');
         }
         
-        return $this->render('equipment/update.html.twig',[
+        return $this->render('admin/equipment/update.html.twig',[
             'form' => $form,
             'equipment' => $equipment,
         ]);
     }
 
-    #[Route('/equipment/{id}' , name:'equipment_details' , methods:['GET'])]
+    #[Route('manager/equipment/{id}' , name:'equipment_details' , methods:['GET'])]
     public function show($id)
     {
         $equipment = $this->equipment->findOneBy(['id' => $id]);
@@ -88,7 +88,7 @@ class EquipmentController extends AbstractController
         ]);
     }
 
-    #[Route('equipment/delete/{id}' ,name:'equipemnt_delete',methods:['GET'])]
+    #[Route('manager/equipment/delete/{id}' ,name:'app_equipment_delete',methods:['GET'])]
     public function destroy($id)
     {
         $equipment = $this->equipment->findOneBy(['id'=> $id]);

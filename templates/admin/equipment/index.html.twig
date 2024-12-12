@@ -1,0 +1,53 @@
+{% extends 'admin/layouts/main.html.twig'%}
+{% block content %}
+  <style>
+      .inline-buttons > * {
+          display: inline-block;
+          margin-right: 5px;
+      }
+  </style>
+    <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th>
+                    <b>N</b>ame
+                  </th>
+                  <th>quantity</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for equipment in equipments %}
+                  <tr>
+                    <td>{{equipment.name }}</td>
+                    <td>{{equipment.quantity}}</td>
+                    <td>
+                    </td>
+                    <td class="inline-buttons">
+                        <form action="p" method="POST">
+
+                        </form>
+                        <a href="{{path('app_equipment_delete',{id:equipment.id})}}" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></a>
+                        <a href ="{{path('app_equipment_update',{id:equipment.id})}}" class="btn btn-success"><i class="bi bi-check-circle"></i></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                
+              </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock%}
